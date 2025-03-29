@@ -9,14 +9,14 @@ class Window:
         """
         Create the window.
         """   
-        self.__widget = Tk()
+        self.__widget: Tk = Tk()
         self.__widget.title("Maze Runner")
         self.__widget.protocol("WM_DELETE_WINDOW", self.close)
 
-        self.__canvas = Canvas(self.__widget, bg="white", width=width, height=height)
+        self.__canvas: Canvas = Canvas(self.__widget, bg="white", width=width, height=height)
         self.__canvas.pack(fill=BOTH, expand=1)
 
-        self.is_running = False
+        self.is_running: bool = False
 
     def redraw(self):
         """

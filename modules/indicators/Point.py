@@ -7,5 +7,5 @@ class Point:
         Create a point. Point(0, 0) is the top left corner.\n
         x increases to the right, y increases downwards.
         """
-        self.x = x
-        self.y = y
+        self.x: int = x
+        self.y: int = y

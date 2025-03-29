@@ -9,8 +9,8 @@ class Line:
         """
         Create a line from start to end.
         """
-        self.start = start
-        self.end = end
+        self.start: Point = start
+        self.end: Point = end
 
     def draw(self, canvas: Canvas, fill_color: str):
         """
