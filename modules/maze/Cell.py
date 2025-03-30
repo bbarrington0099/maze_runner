@@ -30,7 +30,7 @@ class Cell:
                 (top_left_x + bottom_right_x) // 2, 
                 (top_left_y + bottom_right_y) // 2
             )
-        
+        self.visited: bool = False
         self.__window: Window = window
         self.walls: dict = {
             "top": {
@@ -83,6 +83,11 @@ class Cell:
                 self.__window.draw_line(
                     self.walls[wall]["line"], 
                     fill_color
+                )
+            else:
+                self.__window.draw_line(
+                    self.walls[wall]["line"], 
+                    "white"
                 )
 
     def draw_to(self, target_cell: 'Cell', undo: bool = False, 

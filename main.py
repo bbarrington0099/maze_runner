@@ -6,7 +6,7 @@ def main():
     maze = Maze(
         top_left_x=10, top_left_y=10,
         num_rows=16, num_cols=16,
-        cell_width=100, cell_height=100,
+        cell_width=10, cell_height=10,
         window=window
     )
     window.wait_for_close()
