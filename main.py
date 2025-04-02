@@ -9,6 +9,7 @@ def main():
         cell_width=10, cell_height=10,
         window=window
     )
+    maze.solve()
     window.wait_for_close()
 
 if __name__ == "__main__":

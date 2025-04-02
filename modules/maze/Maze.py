@@ -25,6 +25,8 @@ class Maze:
         self._cell_height: int = cell_height
         self._window: Window = window
         self._cells: list[list[Cell]] = []
+        self._entrance_cell: Cell = None
+        self._exit_cell: Cell = None
 
         if seed is not None:
             random.seed(seed)
@@ -74,9 +76,11 @@ class Maze:
         """
         Break the entrance and exit walls of the maze.
         """
+        self._entrance_cell = self._cells[0][0]
+        self._exit_cell = self._cells[self._num_cols - 1][self._num_rows - 1]
         entrance_exit_cells: list[Cell] = [
-            self._cells[0][0],
-            self._cells[self._num_cols - 1][self._num_rows - 1]
+            self._entrance_cell,
+            self._exit_cell
         ]
         for cell in entrance_exit_cells:
             for wall in cell.walls.values():
@@ -132,3 +136,66 @@ class Maze:
         for col in range(self._num_cols):
             for row in range(self._num_rows):
                 self._cells[col][row].visited = False
+
+    def _get_next_cell_coordinates(self, col: int, row: int, direction: str):
+        """
+        Get the next cell column and row in the specified direction.
+        """
+        try:
+            if direction == "top":
+                next_col: int = col
+                next_row: int = row - 1
+            elif direction == "right":
+                next_col: int = col + 1
+                next_row: int = row
+            elif direction == "bottom":
+                next_col: int = col
+                next_row: int = row + 1
+            elif direction == "left":
+                next_col: int = col - 1
+                next_row: int = row
+            return (next_col, next_row)
+        except Exception:
+            return None
+
+    def solve(self):
+        """
+        Recursively solve the maze.
+        """
+        return self._solve_r(0, 0)
+    
+    def _solve_r(self, col: int, row: int):
+        """
+        Depth-first search to solve the maze recursively.
+        """
+        self._animate()
+        
+        current_cell: Cell = self._cells[col][row]
+        current_cell.visited = True
+        
+        if current_cell == self._exit_cell:
+            return True
+        
+        for direction_name in ["top", "right", "bottom", "left"]:
+            if current_cell.walls[direction_name]["has_wall"]:
+                continue
+
+            next_cell_coordinates: tuple[int, int] = self._get_next_cell_coordinates(col, row, direction_name)
+            if next_cell_coordinates is None:
+                continue
+
+            next_col, next_row = next_cell_coordinates
+            if not (0 <= next_col < self._num_cols and 0 <= next_row < self._num_rows):
+                continue
+
+            next_cell: Cell = self._cells[next_col][next_row]
+            if next_cell.visited:
+                continue
+
+            current_cell.draw_to(next_cell)
+
+            if self._solve_r(next_col, next_row):
+                return True
+            
+            current_cell.draw_to(next_cell, True)
+        return False
